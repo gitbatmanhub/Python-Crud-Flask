@@ -1,0 +1,56 @@
+<form>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" value="{{ detalles_cliente['apellidoCliente'] }}" readonly><br>
+
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" name="cedula" value="{{ detalles_cliente['cedulaCliente'] }}" readonly><br>
+
+    <!-- Agrega más campos de entrada aquí para otros detalles del cliente -->
+
+    <button type="button" onclick="window.location.href='/'">Volver</button>
+</form>
+
+
+
+<form action="/datosaFactura" method="post">
+    <select name="idCategoria" id="" required>
+        <option selected disabled value="">Escoge una opcion</option>
+        {% for datos_categoria in datos_categoria %}
+            <option value="{{ datos_categoria['idCategoria'] }}">{{ datos_categoria['nameCategoria'] }}</option>
+        {% endfor %}
+    </select>
+    <select name="idTipoCarrera" id="" required>
+        <option selected disabled value="">Escoge una opcion</option>
+        {% for datos_tipoCarrera in datos_tipoCarrera %}
+            <option value="{{ datos_tipoCarrera['idTipoCarrera'] }}">{{ datos_tipoCarrera['nameTipoCarrera'] }}</option>
+        {% endfor %}
+    </select>
+    <input type="hidden" name="idFactura" value="{{ factura_id }}">
+
+    <button type="submit">Send</button>
+</form>
+
+
+<table>
+    <thead>
+    <tr>
+         <th scope="col">Categoria</th>
+        <th scope="col">Tipo Carrera</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Fecha</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+       {% for datosFactura in datosFactura %}
+        <td>{{ datosFactura['nameCategoria'] }}</td>
+        <td>{{ datosFactura['nameTipoCarrera'] }}</td>
+        <td>{{ datosFactura['precioEntrada'] }}</td>
+        <td>{{ datosFactura['fechaHora'] }}</td>
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>
