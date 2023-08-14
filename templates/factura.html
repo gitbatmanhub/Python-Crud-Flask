@@ -1,6 +1,7 @@
-<form>
+
+  <form>
     <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
+    <input  type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
 
     <label for="apellido">Apellido:</label>
     <input type="text" id="apellido" name="apellido" value="{{ detalles_cliente['apellidoCliente'] }}" readonly><br>
@@ -10,7 +11,7 @@
 
     <!-- Agrega más campos de entrada aquí para otros detalles del cliente -->
 
-    <button type="button" onclick="window.location.href='/'">Volver</button>
+    <button class="btn btn-primary" type="button" onclick="window.location.href='/'">Volver</button>
 </form>
 
 
@@ -36,21 +37,32 @@
 
 <table>
     <thead>
-    <tr>
-         <th scope="col">Categoria</th>
-        <th scope="col">Tipo Carrera</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Fecha</th>
-    </tr>
+        <tr>
+            <th scope="col">Categoria</th>
+            <th scope="col">Tipo Carrera</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Fecha</th>
+        </tr>
     </thead>
     <tbody>
-    <tr>
-       {% for datosFactura in datosFactura %}
-        <td>{{ datosFactura['nameCategoria'] }}</td>
-        <td>{{ datosFactura['nameTipoCarrera'] }}</td>
-        <td>{{ datosFactura['precioEntrada'] }}</td>
-        <td>{{ datosFactura['fechaHora'] }}</td>
+        {% for dato in datosFactura %}
+        <tr>
+            <td>{{ dato['nameCategoria'] }}</td>
+            <td>{{ dato['nameTipoCarrera'] }}</td>
+            <td>${{ dato['precioEntrada'] }}</td>
+            <td>{{ dato['Fecha'] }}</td>
+        </tr>
         {% endfor %}
-    </tr>
+        <tr>
+            <td></td>
+            <td>Suma Total</td>
+            <td>${{total_precios}}</td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
+
+
+
+
+

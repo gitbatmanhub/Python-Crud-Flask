@@ -6,8 +6,8 @@ app = Flask(__name__)
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'admin123',
-    'database': 'maraton'
+    'password': 'admin1223',
+    'database': 'maratongaby'
 }
 
 
@@ -69,14 +69,17 @@ def ver_factura(factura_id):
     cursor.execute("select * from tipoCarrera")
     datos_tipoCarrera = cursor.fetchall()
 
-    cursor.execute("select * from datosFactura where idFactura=%s", (factura_id,))
+    cursor.execute("select * from datosEntradasfactura where idFactura=%s", (factura_id,))
     datosFactura = cursor.fetchall()
 
-
-
+    cursor.execute("select precioEntrada from datosEntradasfactura where idFactura=%s", (factura_id,))
+    precios = cursor.fetchall()
+    valores_precios = [precio['precioEntrada'] for precio in precios]
+    total_precios = sum(filter(lambda x: isinstance(x, float), valores_precios))
+    total_precios = round(total_precios, 2)  # Redondear a 2 decimales
     connection.close()
 
-    return render_template('factura.html', factura_id=factura_id, detalles_cliente=detalles_cliente, datos_categoria=datos_categoria, datos_tipoCarrera=datos_tipoCarrera, datosFactura=datosFactura)
+    return render_template('factura.html', factura_id=factura_id, detalles_cliente=detalles_cliente, datos_categoria=datos_categoria, datos_tipoCarrera=datos_tipoCarrera, datosFactura=datosFactura, total_precios=total_precios)
 
 
 
@@ -85,10 +88,6 @@ def datosFactura():
     idCategoria = request.form['idCategoria']
     idTipoCarrera = request.form['idTipoCarrera']
     idFactura = request.form['idFactura']
-    #print(idCategoria)
-    #print(idTipoCarrera)
-    #print(idFactura)
-
 
 
     connection = get_db_connection()
@@ -105,7 +104,7 @@ def datosFactura():
     #print(precio_categoria)
     #print(precio_tipo)
     preciototal=(float(precio_tipo[0]) + float(precio_categoria[0]))
-    print(preciototal)
+    #print(preciototal)
 
 
     cursor.execute("INSERT INTO entrada (idCategoria, idTipoCarrera, idFactura, precioEntrada) VALUES (%s, %s, %s, %s)", (idCategoria, idTipoCarrera, idFactura, preciototal))
