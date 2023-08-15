@@ -23,8 +23,25 @@ def home():
     cursor.execute("SELECT concat(nameCliente, ' ', apellidoCliente) as nombreCompleto, idCliente FROM cliente")
     users = cursor.fetchall()
     # print(users)
+    cursor.execute
     connection.close()
     return render_template('index.html', users=users)
+
+
+@app.route('/verfacturas')
+def verfacturas():
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("select * from datoslistafacturas order by idFactura;")
+    facturas = cursor.fetchall()
+    # print(users)
+    cursor.execute
+    connection.close()
+    return render_template('todasFacturas.html', facturas=facturas)
+
+
+
+
 
 
 # Ruta para agregar un nuevo usuario
@@ -61,6 +78,7 @@ def ver_factura(factura_id):
     cursor.execute("SELECT * FROM factura WHERE idFactura = %s", (factura_id,))
     detalles_factura = cursor.fetchone()
     id_cliente = detalles_factura['idCliente']
+    idStatus = detalles_factura['status']
     #print(id_cliente)
     cursor.execute("select * from cliente where idCliente= %s", (id_cliente,))
     detalles_cliente = cursor.fetchone()
@@ -79,7 +97,19 @@ def ver_factura(factura_id):
     total_precios = round(total_precios, 2)  # Redondear a 2 decimales
     connection.close()
 
-    return render_template('factura.html', factura_id=factura_id, detalles_cliente=detalles_cliente, datos_categoria=datos_categoria, datos_tipoCarrera=datos_tipoCarrera, datosFactura=datosFactura, total_precios=total_precios)
+    return render_template('factura.html', factura_id=factura_id, detalles_cliente=detalles_cliente, datos_categoria=datos_categoria, datos_tipoCarrera=datos_tipoCarrera, datosFactura=datosFactura, total_precios=total_precios, idStatus=idStatus)
+
+@app.route('/cerrarfactura', methods=['POST'])
+def cerrarFactura():
+    idFactura = request.form['factura_id']
+    precioTotal = request.form['precioTotal']
+    #print(idFactura)
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("update factura set status=1, precioTotal= %s where idFactura= %s", (precioTotal, idFactura,))
+    connection.commit()
+    connection.close()
+    return redirect(url_for('ver_factura', factura_id=idFactura))
 
 
 

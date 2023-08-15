@@ -1,20 +1,24 @@
+<h2>Agregar Cliente</h2>
 <form action="/agregarUsuario" method="post">
-    <input name="nameCliente" type="text" >
-    <input name="apellidoCliente" type="text" >
-    <input name="cedulaCliente" type="number">
+    <input placeholder="Nombre Cliente" name="nameCliente" type="text" >
+    <input placeholder="Apellido Cliente" name="apellidoCliente" type="text" >
+    <input placeholder="Cedula Cliente" name="cedulaCliente" type="number">
 
-    <button type="submit">Send</button>
+    <button type="submit">Enviar</button>
 </form>
 
 
-
+<h2>Crear Factura</h2>
 <form action="/addFactura" method="post">
     <select name="idCliente" id="" required>
-        <option selected disabled value="">Escoge una opcion</option>
+        <option selected disabled value="">Escoge un cliente</option>
         {% for user in users %}
             <option value="{{ user['idCliente'] }}">{{ user['nombreCompleto'] }}</option>
         {% endfor %}
     </select>
 
-    <button type="submit">Send</button>
+    <button type="submit">Crear</button>
 </form>
+
+
+<a href="/verfacturas">Ver todas facturas</a>

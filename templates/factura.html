@@ -1,13 +1,13 @@
 
   <form>
     <label for="nombre">Nombre:</label>
-    <input  type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
+    <input placeholder="Ingrese el nombre" type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
 
     <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" value="{{ detalles_cliente['apellidoCliente'] }}" readonly><br>
+    <input placeholder="Ingrese el apellido" type="text" id="apellido" name="apellido" value="{{ detalles_cliente['apellidoCliente'] }}" readonly><br>
 
     <label for="cedula">Cédula:</label>
-    <input type="text" id="cedula" name="cedula" value="{{ detalles_cliente['cedulaCliente'] }}" readonly><br>
+    <input type="text" id="cedula" placeholder="Ingrese el nr de cedula"  name="cedula" value="0{{ detalles_cliente['cedulaCliente'] }}" readonly><br>
 
     <!-- Agrega más campos de entrada aquí para otros detalles del cliente -->
 
@@ -17,13 +17,13 @@
 
 
 <form action="/datosaFactura" method="post">
-    <select name="idCategoria" id="" required>
+    <select name="idCategoria" class="select" id="" required>
         <option selected disabled value="">Escoge una opcion</option>
         {% for datos_categoria in datos_categoria %}
             <option value="{{ datos_categoria['idCategoria'] }}">{{ datos_categoria['nameCategoria'] }}</option>
         {% endfor %}
     </select>
-    <select name="idTipoCarrera" id="" required>
+    <select name="idTipoCarrera" class="select" id="" required>
         <option selected disabled value="">Escoge una opcion</option>
         {% for datos_tipoCarrera in datos_tipoCarrera %}
             <option value="{{ datos_tipoCarrera['idTipoCarrera'] }}">{{ datos_tipoCarrera['nameTipoCarrera'] }}</option>
@@ -31,7 +31,7 @@
     </select>
     <input type="hidden" name="idFactura" value="{{ factura_id }}">
 
-    <button type="submit">Send</button>
+    <button type="submit" class="botonCerrar">Agregar</button>
 </form>
 
 
@@ -47,22 +47,51 @@
     <tbody>
         {% for dato in datosFactura %}
         <tr>
-            <td>{{ dato['nameCategoria'] }}</td>
-            <td>{{ dato['nameTipoCarrera'] }}</td>
-            <td>${{ dato['precioEntrada'] }}</td>
-            <td>{{ dato['Fecha'] }}</td>
+            <td>{{ dato['nameCategoria'] }}  |</td>
+            <td>{{ dato['nameTipoCarrera'] }}  |</td>
+            <td>${{ dato['precioEntrada'] }}  |</td>
+            <td>{{ dato['Fecha'] }}  |</td>
         </tr>
         {% endfor %}
         <tr>
             <td></td>
-            <td>Suma Total</td>
-            <td>${{total_precios}}</td>
+            <td>| Total  |</td>
+            <td>${{total_precios}}  |</td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
 
+  <form action="/cerrarfactura" method="POST">
+      <input name="factura_id" type="hidden" value="{{factura_id}}">
+      <input type="hidden" id="idStatus" value="{{idStatus}}">
+      <input type="hidden" name="precioTotal" value="{{total_precios}}">
+      <button type="submit" class="botonCerrar">Cerrar</button>
+  </form>
+
+  <a href="/verfacturas">Volver a lista de facturas</a>
 
 
+  <script>
+      window.onload = function() {
+    const idStatus = document.getElementById('idStatus');
+    const botones = document.querySelectorAll('.botonCerrar')
+    const selects = document.querySelectorAll('.select')
 
+    if (parseInt(idStatus.value) == 0) { // el valor es una cadena, no un número y lo trsnformamos a un numero con parseInt
+        alert("Orden abierta correctamente");
+    } else {
+        alert("La presente orden está cerrada, modo solo vista");
+
+        botones.forEach(boton => {
+            boton.disabled = true; // Deshabilitar cada botón individualmente
+        });
+
+        selects.forEach(select => {
+            select.disabled = true; // Deshabilitar cada select individualmente
+        });
+    }
+};
+
+  </script>

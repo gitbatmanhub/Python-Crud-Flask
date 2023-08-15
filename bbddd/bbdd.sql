@@ -90,8 +90,65 @@ select e.idEntrada,
        e.precioEntrada,
        date_format(e.fechaHora, "%d/%m/%Y") as Fecha
 from entrada e
+
          inner join categoria c on e.idCategoria = c.idCategoria
          inner join tipoCarrera tC on e.idTipoCarrera = tC.idTipoCarrera;
 
-         use maraton2;
-         show tables;
+show tables;
+
+select *
+from factura;
+
+
+select *
+from factura;
+
+
+alter table factura
+    add column status int not null default 0;
+show tables;
+
+
+create table status
+(
+    idStatus   int not null primary key,
+    nameStatus varchar(50)
+);
+
+
+insert into status (idStatus, nameStatus)
+values (0, "Abierto"),
+       (1, "Cerrado");
+
+alter table factura
+    add constraint fk_idstatusFactura foreign key (status) references status (idStatus);
+
+
+select *
+from status;
+select *
+from factura
+         inner join status s on factura.status = s.idStatus;
+
+select * from factura;
+
+update factura set status=0 where idFactura= 3;
+
+
+alter table factura add column precioTotal float(5,2) not null default 0;
+alter table factura add column fechaCreacion timestamp default current_timestamp;
+
+select * from factura;
+create view datoslistafacturas as
+select f.idFactura,
+       concat(c.nameCliente, ' ', c.apellidoCliente) as NombreCompleto,
+       s.nameStatus,
+       f.precioTotal,
+       date_format(f.fechaCreacion, "%d/%m/%Y") as Fecha
+
+from factura f
+         inner join cliente c on f.idCliente = c.idCliente
+        inner join status s on f.status = s.idStatus
+
+;
+select * from datoslistafacturas order by idFactura;

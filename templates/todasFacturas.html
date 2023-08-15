@@ -1,0 +1,27 @@
+<h2>Ver todas facturas</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">idFactura |</th>
+            <th scope="col">Nombre Completo |</th>
+            <th scope="col">Estado |</th>
+            <th scope="col">Precio |</th>
+            <th scope="col">Fecha |</th>
+            <th scope="col">Ver Detalles |</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for factura in facturas %}
+        <tr>
+            <td>{{ factura['idFactura'] }}  </td>
+            <td>{{ factura['NombreCompleto'] }}  </td>
+            <td>{{ factura['nameStatus'] }}  </td>
+            <td>${{ factura['precioTotal'] }}  </td>
+            <td>{{ factura['Fecha'] }}  </td>
+            <td><a href="/factura/{{ factura['idFactura'] }}">Ver Factura</a></td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
