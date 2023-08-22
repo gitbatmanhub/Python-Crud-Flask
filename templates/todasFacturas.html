@@ -1,27 +1,35 @@
-<h2>Ver todas facturas</h2>
+<!-- Encabezado para mostrar el título de la página -->
+<h2>Ver todas las facturas</h2>
 
+<!-- Tabla para mostrar los detalles de las facturas -->
 <table>
     <thead>
         <tr>
-            <th scope="col">idFactura |</th>
-            <th scope="col">Nombre Completo |</th>
-            <th scope="col">Estado |</th>
-            <th scope="col">Precio |</th>
-            <th scope="col">Fecha |</th>
-            <th scope="col">Ver Detalles |</th>
+            <!-- Encabezados de columna -->
+            <th scope="col">ID de Factura</th>
+            <th scope="col">Nombre Completo</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Ver Detalles</th>
         </tr>
     </thead>
     <tbody>
+        <!-- Iterar a través de cada factura en la lista de facturas -->
         {% for factura in facturas %}
         <tr>
-            <td>{{ factura['idFactura'] }}  </td>
-            <td>{{ factura['NombreCompleto'] }}  </td>
-            <td>{{ factura['nameStatus'] }}  </td>
-            <td>${{ factura['precioTotal'] }}  </td>
-            <td>{{ factura['Fecha'] }}  </td>
+            <!-- Mostrar los valores de cada factura en celdas -->
+            <td>{{ factura['idFactura'] }}</td>
+            <td>{{ factura['NombreCompleto'] }}</td>
+            <td>{{ factura['nameStatus'] }}</td>
+            <td>${{ factura['precioTotal'] }}</td>
+            <td>{{ factura['Fecha'] }}</td>
             <td><a href="/factura/{{ factura['idFactura'] }}">Ver Factura</a></td>
         </tr>
         {% endfor %}
-
     </tbody>
 </table>
+
+<!-- Enlace para volver a la página de inicio -->
+<br>
+<a href="/">Volver al inicio</a>

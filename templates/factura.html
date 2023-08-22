@@ -1,5 +1,5 @@
-
-  <form>
+<!-- Formulario para mostrar detalles del cliente -->
+<form>
     <label for="nombre">Nombre:</label>
     <input placeholder="Ingrese el nombre" type="text" id="nombre" name="nombre" value="{{ detalles_cliente['nameCliente'] }}" readonly><br>
 
@@ -7,34 +7,38 @@
     <input placeholder="Ingrese el apellido" type="text" id="apellido" name="apellido" value="{{ detalles_cliente['apellidoCliente'] }}" readonly><br>
 
     <label for="cedula">Cédula:</label>
-    <input type="text" id="cedula" placeholder="Ingrese el nr de cedula"  name="cedula" value="0{{ detalles_cliente['cedulaCliente'] }}" readonly><br>
+    <input type="text" id="cedula" placeholder="Ingrese el número de cédula"  name="cedula" value="0{{ detalles_cliente['cedulaCliente'] }}" readonly><br>
 
     <!-- Agrega más campos de entrada aquí para otros detalles del cliente -->
 
+    <!-- Botón para volver -->
     <button class="btn btn-primary" type="button" onclick="window.location.href='/'">Volver</button>
 </form>
 
-
-
+<!-- Formulario para agregar datos a la factura -->
 <form action="/datosaFactura" method="post">
+    <!-- Selección de categoría -->
     <select name="idCategoria" class="select" id="" required>
-        <option selected disabled value="">Escoge una opcion</option>
+        <option selected disabled value="">Escoge una opción</option>
         {% for datos_categoria in datos_categoria %}
             <option value="{{ datos_categoria['idCategoria'] }}">{{ datos_categoria['nameCategoria'] }}</option>
         {% endfor %}
     </select>
+    <!-- Selección de tipo de carrera -->
     <select name="idTipoCarrera" class="select" id="" required>
-        <option selected disabled value="">Escoge una opcion</option>
+        <option selected disabled value="">Escoge una opción</option>
         {% for datos_tipoCarrera in datos_tipoCarrera %}
             <option value="{{ datos_tipoCarrera['idTipoCarrera'] }}">{{ datos_tipoCarrera['nameTipoCarrera'] }}</option>
         {% endfor %}
     </select>
+    <!-- Campo oculto para enviar el ID de la factura -->
     <input type="hidden" name="idFactura" value="{{ factura_id }}">
 
+    <!-- Botón para enviar el formulario -->
     <button type="submit" class="botonCerrar">Agregar</button>
 </form>
 
-
+<!-- Tabla para mostrar los detalles de la factura -->
 <table>
     <thead>
         <tr>
@@ -45,6 +49,7 @@
         </tr>
     </thead>
     <tbody>
+        <!-- Ciclo para mostrar cada dato de la factura -->
         {% for dato in datosFactura %}
         <tr>
             <td>{{ dato['nameCategoria'] }}  |</td>
@@ -53,45 +58,57 @@
             <td>{{ dato['Fecha'] }}  |</td>
         </tr>
         {% endfor %}
+        <!-- Fila para mostrar el total -->
         <tr>
             <td></td>
             <td>| Total  |</td>
-            <td>${{total_precios}}  |</td>
+            <td>${{ total_precios }}  |</td>
             <td></td>
         </tr>
     </tbody>
 </table>
 
+<!-- Formulario para cerrar la factura -->
+<form action="/cerrarfactura" method="POST">
+    <!-- Campos ocultos para enviar datos -->
+    <input name="factura_id" type="hidden" value="{{ factura_id }}">
+    <input type="hidden" id="idStatus" value="{{ idStatus }}">
+    <input type="hidden" name="precioTotal" value="{{ total_precios }}">
+    <!-- Botón para cerrar la factura -->
+    <button type="submit" class="botonCerrar">Cerrar</button>
+</form>
 
-  <form action="/cerrarfactura" method="POST">
-      <input name="factura_id" type="hidden" value="{{factura_id}}">
-      <input type="hidden" id="idStatus" value="{{idStatus}}">
-      <input type="hidden" name="precioTotal" value="{{total_precios}}">
-      <button type="submit" class="botonCerrar">Cerrar</button>
-  </form>
+<!-- Enlace para volver a la lista de facturas -->
+<a href="/verfacturas">Volver a lista de facturas</a>
 
-  <a href="/verfacturas">Volver a lista de facturas</a>
+<!-- Script para manejar la visualización según el estado de la factura -->
+<!-- Este script se encargará de verificar el estado de la factura y deshabilitar los botones y selects correspondientes si la factura está cerrada-->
+<script>
+    window.onload = function() {
+        // Obtener el elemento con el idStatus
+        const idStatus = document.getElementById('idStatus');
 
+        // Obtener todos los botones y selects que deben deshabilitarse
+        const botones = document.querySelectorAll('.botonCerrar');
+        const selects = document.querySelectorAll('.select');
 
-  <script>
-      window.onload = function() {
-    const idStatus = document.getElementById('idStatus');
-    const botones = document.querySelectorAll('.botonCerrar')
-    const selects = document.querySelectorAll('.select')
+        // Verificar el valor de idStatus
+        if (parseInt(idStatus.value) == 0) {
+            // Si la factura está abierta
+            alert("Orden abierta correctamente");
+        } else {
+            // Si la factura está cerrada
+            alert("La presente orden está cerrada, modo solo vista");
 
-    if (parseInt(idStatus.value) == 0) { // el valor es una cadena, no un número y lo trsnformamos a un numero con parseInt
-        alert("Orden abierta correctamente");
-    } else {
-        alert("La presente orden está cerrada, modo solo vista");
+            // Deshabilitar botones
+            botones.forEach(boton => {
+                boton.disabled = true; // Deshabilitar cada botón individualmente
+            });
 
-        botones.forEach(boton => {
-            boton.disabled = true; // Deshabilitar cada botón individualmente
-        });
-
-        selects.forEach(select => {
-            select.disabled = true; // Deshabilitar cada select individualmente
-        });
-    }
-};
-
-  </script>
+            // Deshabilitar selects
+            selects.forEach(select => {
+                select.disabled = true; // Deshabilitar cada select individualmente
+            });
+        }
+    };
+</script>

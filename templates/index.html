@@ -1,13 +1,18 @@
+<!-- Este código incluye dos formularios: uno para agregar un nuevo cliente y otro para crear una nueva factura. Además, hay un enlace que dirige a la página que muestra todas las facturas existentes. -->
+
+
+<!-- Formulario para agregar un nuevo cliente -->
 <h2>Agregar Cliente</h2>
 <form action="/agregarUsuario" method="post">
-    <input placeholder="Nombre Cliente" name="nameCliente" type="text" >
-    <input placeholder="Apellido Cliente" name="apellidoCliente" type="text" >
-    <input placeholder="Cedula Cliente" name="cedulaCliente" type="number">
+    <input placeholder="Nombre Cliente" name="nameCliente" type="text" required >
+    <input placeholder="Apellido Cliente" name="apellidoCliente" type="text" required>
+    <input placeholder="Cedula Cliente" name="cedulaCliente" type="number" required>
 
     <button type="submit">Enviar</button>
 </form>
 
 
+<!-- Formulario para crear una nueva factura -->
 <h2>Crear Factura</h2>
 <form action="/addFactura" method="post">
     <select name="idCliente" id="" required>
@@ -20,5 +25,5 @@
     <button type="submit">Crear</button>
 </form>
 
-
+<!-- Enlace para ver todas las facturas -->
 <a href="/verfacturas">Ver todas facturas</a>
